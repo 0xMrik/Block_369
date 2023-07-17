@@ -1,0 +1,15 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.16.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.2",
+    "base-64": "^1.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "hardhat run scripts/deploy.js --network localhost"
+  }
+}
