@@ -222,5 +222,4 @@ contract NFTMarketplace is ERC721URIStorage {
         require(ownerTransferSuccess, "Transfer to owner failed");
         token.leaseContract.rent = 0;
     }
-
 }
