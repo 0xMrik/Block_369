@@ -1,7 +1,7 @@
 "use client"
 
-import Header from '../app/components/Header/Header'
-import Main from '../app/components/Main/Main'
+import Header from './components/Header'
+import Main from './components/Main'
 
 export default function Home() {
   return (

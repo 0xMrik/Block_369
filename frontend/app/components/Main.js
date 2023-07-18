@@ -3,7 +3,7 @@ import { Flex, Text, Input, Button } from "@chakra-ui/react"
 import { useAccount } from 'wagmi'
 import { prepareWriteContract, writeContract, readContract } from '@wagmi/core'
 import { useState, useEffect } from 'react'
-import Contract from '../../../../hardhat/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
+import Contract from '../../../hardhat/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
 
 const Main = () => {
 
