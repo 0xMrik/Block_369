@@ -1,82 +1,63 @@
-import { useState } from 'react';
-import { uploadJSONToIPFS, uploadFileToIPFS } from '../../pinata'
-import { Box, Button, FormControl, FormLabel, Input, NumberInput, NumberInputField, VStack, InputGroup, InputRightElement, Text, Textarea, Center, Stack } from "@chakra-ui/react"
-import { MintNFTButton } from './MintNFTButton';
+import * as React from 'react'
+import contractABI from '../../contract-abi.json'
+
+import { usePrepareContractWrite, useContractWrite } from 'wagmi'
 
 const CreateNFT = () => {
-  const [image, setImage] = useState();
-  const [tokenURI, setTokenURI] = useState();
-  const [tokenData, setTokenData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    leaseDuration: ''
-  });
+  const [tokenURI, setTokenURI] = React.useState('');
+  const [price, setPrice] = React.useState('');
+  const [rent, setRent] = React.useState('');
+  const [leaseDuration, setLeaseDuration] = React.useState('');
 
-  const uploadImage = async () => {
-    const response = await uploadFileToIPFS(image);
-    if (response.success) {
-      setTokenURI(response.pinataURL);
-      toast({
-        title: "Image uploaded successfully.",
-        description: `Image is available at ${response.pinataURL}`,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      console.error(response.message);
-      toast({
-        title: "Image upload failed.",
-        description: response.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+  const { config, error } = usePrepareContractWrite({
+    address: '0x5fbdb2315678afecb367f032d93f642f64180aa3', 
+    abi: contractABI,
+    functionName: 'createToken',
+    args: [tokenURI, parseInt(price), parseInt(rent), parseInt(leaseDuration)],
+    enabled: Boolean(price && rent && leaseDuration),
+    value: parseEther('0.1'),
+  })
+
+  const { write } = useContractWrite(config)
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Appeler la fonction write pour mint le NFT
+    if (write) {
+      write().then((receipt) => {
+        console.log('Transaction successful:', receipt)
+      }).catch((err) => {
+        console.error('Transaction failed:', err)
+      })
     }
-  };
-
-  const handleChange = (e) => {
-    setTokenData({
-      ...tokenData,
-      [e.target.name]: e.target.value
-    });
   }
 
+  console.log('write:', write);
+  console.log('tokenURI:', tokenURI);
+  console.log('price:', price);
+  console.log('rent:', rent);
+  console.log('leaseDuration:', leaseDuration);
+  console.log('error:', error);
 
   return (
-    <Center>
-      <Box p="2rem" w="50%" mt="2rem">
-        <Text textAlign="center" fontSize="2xl" mb="2rem">Upload your NFT to the marketplace</Text>
-        <VStack spacing={4}>
-          <FormControl id="tokenURI">
-            <FormLabel>NFT Name</FormLabel>
-            <Input type="text" name="name" value={tokenData.name} onChange={handleChange} />
-          </FormControl>
-          <FormControl id="description">
-            <FormLabel>NFT Description</FormLabel>
-            <Textarea name="description" value={tokenData.description} onChange={handleChange} />
-          </FormControl>
-          <FormControl id="price">
-            <FormLabel>Price (in ETH)</FormLabel>
-            <NumberInput precision={2}>
-              <NumberInputField name="price" value={tokenData.price} onChange={handleChange} />
-            </NumberInput>
-          </FormControl>
-          <FormControl id="leaseDuration">
-            <FormLabel>Lease Duration</FormLabel>
-            <NumberInput>
-              <NumberInputField name="leaseDuration" value={tokenData.leaseDuration} onChange={handleChange} />
-            </NumberInput>
-          </FormControl>
-          <Stack direction="row" spacing={4}>
-            <Input type="file" onChange={event => setImage(event.target.files[0])} />
-            <Button colorScheme="blue" onClick={uploadImage}>Upload</Button>
-          </Stack>
-          <MintNFTButton tokenData={tokenData} />
-        </VStack>
-      </Box>
-    </Center>
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="tokenURI">Token URI</label>
+      <input id="tokenURI" value={tokenURI} onChange={(e) => setTokenURI(e.target.value)} placeholder="Token URI" />
+
+      <label htmlFor="price">Price</label>
+      <input id="price" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
+
+      <label htmlFor="rent">Rent</label>
+      <input id="rent" value={rent} onChange={(e) => setRent(e.target.value)} placeholder="Rent" />
+
+      <label htmlFor="leaseDuration">Lease Duration</label>
+      <input id="leaseDuration" value={leaseDuration} onChange={(e) => setLeaseDuration(e.target.value)} placeholder="Lease Duration" />
+
+      <button type="submit" disabled={!write}>Mint</button>
+      {error && (
+        <div>An error occurred preparing the transaction: {error.message}</div>
+      )}
+    </form>
   )
 }
 

@@ -3,7 +3,9 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useAc
 import { Button, useToast } from '@chakra-ui/react';
 import contractABI from '../../contract-abi.json'
 
+
 export function MintNFTButton({ tokenData }) {
+  console.log('ABI du contrat :',contractABI)
   const { isConnected } = useAccount();
   const toast = useToast();
   const {
@@ -16,8 +18,17 @@ export function MintNFTButton({ tokenData }) {
     functionName: 'createToken',
     args: [tokenData.tokenURI, tokenData.price, tokenData.rent, tokenData.leaseDuration], 
     enabled: Boolean(tokenData),
+    value: parseEther('1'),
   })
+
+  console.log('usePrepareContractWrite config:', config);
+  console.log('usePrepareContractWrite error:', prepareError);
+
   const { data, error, isError, write } = useContractWrite(config)
+
+  console.log('useContractWrite data:', data);
+  console.log('useContractWrite error:', error);
+  console.log('useContractWrite write function:', write);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -33,7 +44,9 @@ export function MintNFTButton({ tokenData }) {
         isClosable: true,
       });
     } else {
+      console.log('Calling write function...');
       write();
+      console.log('Write function called.');
     }
   }
 
