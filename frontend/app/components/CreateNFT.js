@@ -15,7 +15,7 @@ const CreateNFT = () => {
     functionName: 'createToken',
     args: [tokenURI, parseInt(price), parseInt(rent), parseInt(leaseDuration)],
     enabled: Boolean(price && rent && leaseDuration),
-    value: parseEther('0.1'),
+    value: parseInt('0.1'),
   })
 
   const { write } = useContractWrite(config)

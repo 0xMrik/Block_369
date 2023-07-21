@@ -13,22 +13,6 @@ const Main = () => {
     const [number, setNumber] = useState(null)
     const [getNumber, setGetNumber] = useState(null)
 
-    const setFavoriteNumber = async () => {
-        try {
-            const { request } = await prepareWriteContract({
-                address: contractAddress,
-                abi: Contract.abi,
-                functionName: "setNumber",
-                args: [number]
-            });
-            const { hash } = await writeContract(request);
-            await getDatas()
-            return hash;
-        } catch (err) {
-            console.log(err.message)
-        }
-    }
-
     const getDatas = async() => {
         try {
             const data = await readContract({
@@ -52,12 +36,8 @@ const Main = () => {
         <Flex p="2rem" width="100%" height="85vh" justifyContent="center" alignItems="center">
             {isConnected ? (
                 <Flex direction="column" width="100%">
-                    <Flex>
-                        <Input onChange={e => setNumber(e.target.value)} placeholder="Your favorite number" />
-                        <Button onClick={() => setFavoriteNumber()} colorScheme="purple">Set Favorite Number</Button>
-                    </Flex>
                     <Flex alignItems="center" justifyContent="center" mt="2rem">
-                        <Text>Your favorite number : {getNumber}</Text>
+                        <Text>Bienvenue sur Block369</Text>
                     </Flex> 
                 </Flex>
             ) : (
