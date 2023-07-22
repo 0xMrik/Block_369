@@ -1,6 +1,7 @@
 "use client"
 import './globals.css'
 import { ChakraProvider } from '@chakra-ui/react'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -35,15 +36,23 @@ const wagmiConfig = createConfig({
   publicClient
 })
 
+// Create an Apollo Client instance
+const client = new ApolloClient({
+  uri: 'https://api.studio.thegraph.com/query/50153/block369/version/latest',
+  cache: new InMemoryCache(),
+});
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
-            <ChakraProvider>
-              {children}
-            </ChakraProvider>
+            <ApolloProvider client={client}>
+              <ChakraProvider>
+                {children}
+              </ChakraProvider>
+            </ApolloProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </body>
