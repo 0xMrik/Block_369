@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { Box, Text, Button, Flex, Spacer } from "@chakra-ui/react"
+import { Box, Text, Button, Flex, Spacer, Center } from "@chakra-ui/react"
 import Link from 'next/link'
 
 const Header = () => {
@@ -9,24 +9,22 @@ const Header = () => {
             p="4"
             display="flex"
             alignItems="center"
+            justifyContent={"space-between"}
             width="100%"
             backgroundColor="gray.800"
         >
-            <Link href="/" passHref>
-                <Text fontSize="xl" color="white" cursor="pointer">Block 369</Text>
-            </Link>
-            <Flex ml="4">
-                <Link href="/createNFT" passHref>
-                    <Button colorScheme="blue" mr="4">Create Lease contract</Button>
+            <Text fontSize="xl" color="white" cursor="pointer">Block 369</Text>
+            <Flex ml="4" >
+                <Link href="/" passHref>
+                    <Button colorScheme="blue" mr="4">Home</Button>
                 </Link>
-                <Link href="/viewNFT" passHref>
-                    <Button colorScheme="blue" mr="4">Marketplace</Button>
+                <Link href="/Create" passHref>
+                    <Button colorScheme="blue" mr="4">Create</Button>
                 </Link>
-                <Link href="/dashboard" passHref>
+                <Link href="/Dashboard" passHref>
                     <Button colorScheme="blue" mr="4">Dashboard</Button>
                 </Link>
             </Flex>
-            <Spacer />
             <ConnectButton />
         </Box>
     )

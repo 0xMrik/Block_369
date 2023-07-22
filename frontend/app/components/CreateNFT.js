@@ -6,11 +6,9 @@ import { usePrepareContractWrite, useContractWrite } from 'wagmi'
 const CreateNFT = () => {
   const [tokenURI, setTokenURI] = React.useState('');
   const [price, setPrice] = React.useState('');
-  const [rent, setRent] = React.useState('');
-  const [leaseDuration, setLeaseDuration] = React.useState('');
 
   const { config, error } = usePrepareContractWrite({
-    address: '0x5fbdb2315678afecb367f032d93f642f64180aa3', 
+    address: '0xD9FE224B595F619259d7991ba1e5E16965540e67', 
     abi: contractABI,
     functionName: 'createToken',
     args: [tokenURI, parseInt(price), parseInt(rent), parseInt(leaseDuration)],
@@ -32,12 +30,6 @@ const CreateNFT = () => {
     }
   }
 
-  console.log('write:', write);
-  console.log('tokenURI:', tokenURI);
-  console.log('price:', price);
-  console.log('rent:', rent);
-  console.log('leaseDuration:', leaseDuration);
-  console.log('error:', error);
 
   return (
     <form onSubmit={handleSubmit}>
