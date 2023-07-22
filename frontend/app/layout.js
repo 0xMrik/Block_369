@@ -10,27 +10,27 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  hardhat, sepolia
+  mainnet, sepolia
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient } = configureChains(
-  [hardhat, sepolia],
+  [mainnet, sepolia],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
+    alchemyProvider({ apiKey: 'LLTWC1m79oaBWtalEdxW_Tjb2IJ6NJ2N' }),
     publicProvider()
   ]
 );
 
 const { connectors } = getDefaultWallets({
   appName: 'Block369',
-  projectId: 'c5be304e39a248e2b4eae6f0d932a51b',
+  projectId: '9f8620e2c37a317b8493ba7537c3aba7',
   chains
 });
 
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors,
   publicClient
 })

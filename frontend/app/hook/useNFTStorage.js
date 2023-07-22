@@ -4,10 +4,10 @@ import { NFTStorage, File } from 'nft.storage'
 const client = new NFTStorage({ token: process.env.NEXT_PUBLIC_NFT_STORAGE_KEY });
 
 const useNFTStorage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const uploadToNFTStorage = async ({ name, description, image }) => {
-    setIsLoading(true);
+    setIsUploading(true);
     try {
       const file = new File([image], "nft-image", { type: image.type });
       const metadata = await client.store({
@@ -20,11 +20,12 @@ const useNFTStorage = () => {
       console.error("Failed to upload to NFT.Storage:", error);
       throw error;
     } finally {
-      setIsLoading(false);
+      setIsUploading(false);
     }
   };
 
-  return { uploadToNFTStorage, isLoading };
+
+  return { uploadToNFTStorage, isUploading };
 };
 
 export default useNFTStorage;

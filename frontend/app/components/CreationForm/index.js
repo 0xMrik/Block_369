@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Box, VStack, Flex, Heading, Spacer, Center, SlideFade } from "@chakra-ui/react";
-import useToasts from "../../state/useToasts";
-import useNFTStorage from "../../state/useNFTStorage";
 
+// Hooks 
+import useToasts from "../../hook/useToasts";
+import useNFTStorage from "../../hook/useNFTStorage";
+import useMintNFT from "../../hook/useMintNFT";
+
+// Components 
 import ImageUploadField from "./ImageUploadField";
 import TextField from "./TextField";
 import SubmitButton from "./SubmitButton";
@@ -12,7 +16,8 @@ const CreationForm = ({ onSubmit }) => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const { showErrorToast, showSuccessToast } = useToasts();
-  const { uploadToNFTStorage, isLoading } = useNFTStorage();
+  const { uploadToNFTStorage, isUploading } = useNFTStorage();
+  const { mintNFT, isLoading, isSuccess, error, isError } = useMintNFT();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,9 +31,10 @@ const CreationForm = ({ onSubmit }) => {
           image,
           description,
           name,
-          metadataUrl: metadata.url, 
+          tokenURI: metadata.url, 
         });
       } catch (error) {
+        console.error(error);
         showErrorToast("There was an error uploading your NFT. Please try again.");
       }
     }
@@ -47,7 +53,7 @@ const CreationForm = ({ onSubmit }) => {
             <VStack spacing={4}>
               <TextField id="description" label="Description" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} tooltip="Describe your NFT" />
               <TextField id="name" label="Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} tooltip="Give a name to your NFT" />
-              <SubmitButton isLoading={isLoading} />
+              <SubmitButton isLoading={isLoading || isUploading} />
             </VStack>
           </Flex>
         </Box>
