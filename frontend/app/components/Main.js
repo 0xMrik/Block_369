@@ -1,7 +1,6 @@
 "use client"
 import { Flex, Text, Input, Button } from "@chakra-ui/react"
 import { useAccount } from 'wagmi'
-import AllNFT from "../components/AllNFT"
 
 
 const Main = () => {
