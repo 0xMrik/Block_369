@@ -3,8 +3,8 @@ import { Box, VStack, Flex, Heading, Spacer, Center, SlideFade } from "@chakra-u
 
 // Hooks 
 import useToasts from "../../hook/useToasts";
-import useNFTStorage from "../../hook/useNFTStorage";
-import useMintNFT from "../../hook/useMintNFT";
+import useNFTStorage from "../../hook/data/useNFTStorage";
+import useMintNFT from "../../hook/contract_action/useMintNFT";
 
 // Components 
 import ImageUploadField from "./ImageUploadField";

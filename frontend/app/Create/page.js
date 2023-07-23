@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import { useAccount } from 'wagmi'
 import { Flex, Text } from "@chakra-ui/react"
 import CreationForm from '../components/CreationForm'
-import useMintNFT from '../hook/useMintNFT' 
+import useMintNFT from '../hook/contract_action/useMintNFT' 
 
 export default function Home() {
   const { isConnected } = useAccount()

@@ -8,14 +8,14 @@ import '@rainbow-me/rainbowkit/styles.css';
 const { chains, publicClient } = configureChains(
   [mainnet, sepolia],
   [
-    alchemyProvider({ apiKey: 'LLTWC1m79oaBWtalEdxW_Tjb2IJ6NJ2N' }),
+    alchemyProvider({ apiKey: `${NEXT_PUBLIC_ALCHEMY_ID}` }),
     publicProvider()
   ]
 );
 
 const { connectors } = getDefaultWallets({
   appName: 'Block369',
-  projectId: '9f8620e2c37a317b8493ba7537c3aba7',
+  projectId: `${NEXT_PUBLIC_PROJECT_ID_CLOUD_CONNECT}`,
   chains
 });
 

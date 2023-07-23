@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { useAccount } from 'wagmi';
-import { GET_OWNED_NFTS } from '../graphql/queries';
+import { GET_OWNED_LISTED_NFTS } from '../../graphql/queries';
 
-const useOwnedNFTs = () => {
+const useOwnedListedNFTs = () => {
     const { address } = useAccount();
     const { loading, error, data } = useQuery(
-        GET_OWNED_NFTS,
+        GET_OWNED_LISTED_NFTS,
         { variables: { owner: address ?? "" }, skip: !address || address === "" }
     );
 
@@ -13,9 +13,10 @@ const useOwnedNFTs = () => {
     if (error) return { error };
 
 
-    const ownedNFTs = data?.nfts ? data.nfts : [];
-    return { ownedNFTs };
+    const OwnedListedNFTs = data?.nfts ? data.nfts : [];
+    console.log("HOOK :", OwnedListedNFTs)
+    return { OwnedListedNFTs };
     
 };
 
-export default useOwnedNFTs;
+export default useOwnedListedNFTs;

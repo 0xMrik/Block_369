@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { Image, Heading, Text, Button, Divider, Card, CardBody, CardFooter, Stack, Box } from "@chakra-ui/react";
 import { formatEther } from "viem";
-import SellModal from './SellModal'; 
+import SellModal from './SellModal';
+import useCancelListing from '../hook/contract_action/useCancelNFTListing';
+import useToasts from '../hook/useToasts';
 
 const NFTCard = ({ nft }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showErrorToast, showSuccessToast } = useToasts();
+
+  const { cancelListing, isLoading } = useCancelListing({
+    onError: (error) => showErrorToast(error.message),
+    onSuccess: () => {
+      console.log("Unlisted !");
+      showSuccessToast("Your NFT listing has been cancelled successfully!")
+    }
+  });
 
   const handleSellNow = () => {
     setIsModalOpen(true);
   };
 
+  const handleUnlistNow = () => {
+    cancelListing(nft.id); 
+  };
+
   return (
-    <Card maxW='sm' bg='white' boxShadow='lg' borderRadius='lg'>
+    <Card maxW='sm' bg='white' boxShadow='0 0 30px 10px rgba(0,0,0,0.15)' borderRadius='lg'>
       <CardBody>
         <Image
           src={nft.image.startsWith('ipfs') ? `https://ipfs.io/ipfs/${nft.image.split('//')[1]}` : nft.image}
@@ -29,9 +44,15 @@ const NFTCard = ({ nft }) => {
       </CardBody>
       <Divider />
       <CardFooter>
+        {nft.price > 0 ?
+          <Button variant='solid' colorScheme='red' onClick={handleUnlistNow}>
+            Unlist
+          </Button>
+          :
           <Button variant='solid' colorScheme='blue' onClick={handleSellNow}>
             Sell now
           </Button>
+        }
       </CardFooter>
       <SellModal nft={nft} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </Card>

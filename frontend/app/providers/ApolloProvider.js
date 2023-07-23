@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'https://api.studio.thegraph.com/query/50153/block369/version/latest',
+  uri: `${NEXT_PUBLIC_API_THE_GRAPH}`,
   cache: new InMemoryCache(),
 });
 

@@ -1,11 +1,11 @@
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { useState } from 'react';
-import contractABI from '../../contract-abi.json'
+import contractABI from '../../../contract-abi.json'
 
 export default function useMintNFT() {
     const [tokenURI, setTokenURI] = useState(null);
     const { config, error: prepareError, isError: isPrepareError } = usePrepareContractWrite({
-        address: '0xD9FE224B595F619259d7991ba1e5E16965540e67',
+        address: `${process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}`,
         abi: contractABI.abi,
         functionName: 'createNFT',
         args: [tokenURI],
