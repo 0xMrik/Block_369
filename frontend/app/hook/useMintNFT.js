@@ -1,6 +1,6 @@
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { useState } from 'react';
-import contractABI from '../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarket.json'
+import contractABI from '../../contract-abi.json'
 
 export default function useMintNFT() {
     const [tokenURI, setTokenURI] = useState(null);

@@ -9,7 +9,7 @@ const CreateNFT = () => {
 
   const { config, error } = usePrepareContractWrite({
     address: '0xD9FE224B595F619259d7991ba1e5E16965540e67', 
-    abi: contractABI,
+    abi: contractABI.abi,
     functionName: 'createToken',
     args: [tokenURI, parseInt(price), parseInt(rent), parseInt(leaseDuration)],
     enabled: Boolean(price && rent && leaseDuration),

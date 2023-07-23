@@ -1,6 +1,6 @@
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { useEffect, useState } from 'react';
-import contractABI from '../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarket.json';
+import contractABI from '../../contract-abi.json';
 import { parseUnits } from 'viem';
 
 export default function useListNFT() {
