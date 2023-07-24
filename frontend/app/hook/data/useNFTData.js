@@ -12,7 +12,7 @@ const useNFTData = (nfts) => {
         const ipfsCID = nft.tokenURI.split('//')[1];
         const metadataUrl = `https://ipfs.io/ipfs/${ipfsCID}`;
         let response = await axios.get(metadataUrl);
-        return { ...response.data, id: nft.id, price: nft.price };
+        return { ...response.data, id: nft.id, price: nft.price, from: nft.from }; 
       }));
 
       setNftData(data);

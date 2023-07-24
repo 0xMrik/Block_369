@@ -4,15 +4,31 @@ import { formatEther } from "viem";
 import SellModal from './SellModal';
 import useCancelListing from '../hook/contract_action/useCancelNFTListing';
 import useToasts from '../hook/useToasts';
+import { useAccount } from 'wagmi';
+import useBuyNFT from '../hook/contract_action/useBuyNFT';
+
 
 const NFTCard = ({ nft }) => {
+  const { address } = useAccount();
+  if(nft.from === address) {
+    console.log('SUCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
+  }
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { showErrorToast, showSuccessToast } = useToasts();
 
-  const { cancelListing, isLoading } = useCancelListing({
+  const { cancelListing, isLoading: cancelIsLoading } = useCancelListing({
     onError: (error) => showErrorToast(error.message),
     onSuccess: () => {
       showSuccessToast("Your NFT listing has been cancelled successfully!")
+    }
+  });
+
+  const { buyNFT, isLoading: buyIsLoading } = useBuyNFT({
+    onError: (error) => showErrorToast(error.message),
+    onSuccess: () => {
+      showSuccessToast("Your NFT was purchased successfully!")
     }
   });
 
@@ -21,9 +37,13 @@ const NFTCard = ({ nft }) => {
   };
 
   const handleUnlistNow = () => {
-    cancelListing(nft.id); 
+    cancelListing(nft.id);
   };
 
+  const handleBuyNow = () => {
+    buyNFT(nft.id, nft.price);
+  };
+  console.log("nft price --------------> ", { nft })
   return (
     <Card maxW='sm' bg='white' boxShadow='0 0 30px 10px rgba(0,0,0,0.15)' borderRadius='lg'>
       <CardBody>
@@ -43,19 +63,27 @@ const NFTCard = ({ nft }) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        {nft.price > 0 ?
-          <Button variant='solid' colorScheme='red' onClick={handleUnlistNow}>
-            Unlist
-          </Button>
-          :
-          <Button variant='solid' colorScheme='blue' onClick={handleSellNow}>
-            Sell now
-          </Button>
-        }
+        <CardFooter>
+          {nft.price > 0 ? (
+            <Stack direction="row" spacing={4}>
+              <Button variant='solid' colorScheme='red' onClick={handleUnlistNow}>
+                Unlist
+              </Button>
+              <Button variant='solid' colorScheme='green' onClick={handleBuyNow}>
+                Buy Now
+              </Button>
+            </Stack>
+          ) : (
+            <Button variant='solid' colorScheme='blue' onClick={handleSellNow}>
+              Sell now
+            </Button>
+          )}
+        </CardFooter>
       </CardFooter>
       <SellModal nft={nft} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </Card>
   );
 };
+
 
 export default NFTCard;
