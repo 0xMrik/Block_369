@@ -28,3 +28,20 @@ query GetOwnedListedNFTs($owner: String!) {
   }
 }
 `;
+
+export const GET_LISTED_NFTS = gql`
+  query GetListedNFTs($currentAddress: String!) {
+    nfts(
+      where: {
+        to: "${process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}"
+        from_not: $currentAddress
+      }
+    ) {
+      id
+      from
+      to
+      tokenURI
+      price
+    }
+  }
+`;

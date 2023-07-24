@@ -12,7 +12,6 @@ const NFTCard = ({ nft }) => {
   const { cancelListing, isLoading } = useCancelListing({
     onError: (error) => showErrorToast(error.message),
     onSuccess: () => {
-      console.log("Unlisted !");
       showSuccessToast("Your NFT listing has been cancelled successfully!")
     }
   });

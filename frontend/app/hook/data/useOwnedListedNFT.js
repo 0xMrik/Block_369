@@ -14,7 +14,6 @@ const useOwnedListedNFTs = () => {
 
 
     const OwnedListedNFTs = data?.nfts ? data.nfts : [];
-    console.log("HOOK :", OwnedListedNFTs)
     return { OwnedListedNFTs };
     
 };
