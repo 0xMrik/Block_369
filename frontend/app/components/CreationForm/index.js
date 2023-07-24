@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, VStack, Flex, Heading, Spacer, Center, SlideFade } from "@chakra-ui/react";
+import { Box, VStack, Flex, Heading, Spacer, Center, SlideFade, Button } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
 
 // Hooks 
 import useToasts from "../../hook/useToasts";
@@ -9,41 +10,46 @@ import useMintNFT from "../../hook/contract_action/useMintNFT";
 // Components 
 import ImageUploadField from "./ImageUploadField";
 import TextField from "./TextField";
-import SubmitButton from "./SubmitButton";
 
 const CreationForm = ({ onSubmit }) => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
+  const [tokenURI, setTokenURI] = useState(null);
   const { showErrorToast, showSuccessToast } = useToasts();
   const { uploadToNFTStorage, isUploading } = useNFTStorage();
-  const { mintNFT, isLoading, isSuccess, error, isError } = useMintNFT();
+  
+  const { mintNFT, isLoading: isMinting, isSuccess: isMintSuccess, error: mintError, isError: isMintError } = useMintNFT({
+    onError: () => showErrorToast("There was an error minting your NFT."),
+    onSuccess: () => showSuccessToast("Your NFT was minted successfully!")
+  });
 
-  const handleSubmit = async (event) => {
+  const handleUpload = async (event) => {
     event.preventDefault();
     if (!image || !description || !name) {
-      showErrorToast("Please fill all fields.");
-    } else {
-      try {
-        const metadata = await uploadToNFTStorage({ name, description, image });
-        showSuccessToast("We've received your information.");
-        onSubmit({
-          image,
-          description,
-          name,
-          tokenURI: metadata.url, 
-        });
-      } catch (error) {
-        console.error(error);
-        showErrorToast("There was an error uploading your NFT. Please try again.");
-      }
+      return showErrorToast("Please fill all fields.");
+    } 
+      
+    try {
+      const metadata = await uploadToNFTStorage({ name, description, image });
+      if (!metadata) throw new Error("Failed to upload metadata.");
+      showSuccessToast("We've received your information.");
+      setTokenURI(metadata.url);
+    } catch (error) {
+      console.error(error);
+      showErrorToast("There was an error uploading your NFT. Please try again.");
     }
+  };
+
+  const handleMint = (event) => {
+    event.preventDefault();
+    mintNFT(tokenURI);
   };
 
   return (
     <Center h="100vh">
       <SlideFade in={true} offsetY="20px">
-        <Box as="form" onSubmit={handleSubmit} p={5} shadow="md" borderWidth="1px">
+        <Box as="form" onSubmit={handleUpload} p={5} shadow="md" borderWidth="1px">
           <Heading mb={5}>Create a new NFT</Heading>
           <Flex>
             <VStack spacing={4} mr={5}>
@@ -53,7 +59,15 @@ const CreationForm = ({ onSubmit }) => {
             <VStack spacing={4}>
               <TextField id="description" label="Description" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} tooltip="Describe your NFT" />
               <TextField id="name" label="Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} tooltip="Give a name to your NFT" />
-              <SubmitButton isLoading={isLoading || isUploading} />
+              {!tokenURI ? 
+                <Button leftIcon={<CheckIcon />} colorScheme="teal" variant="solid" type="submit" onClick={handleUpload} isLoading={ isUploading}>
+                  Upload
+                </Button> 
+                :
+                <Button leftIcon={<CheckIcon />} colorScheme="teal" variant="solid" type="submit" onClick={handleMint} isLoading={ isMinting}>
+                  Mint
+                </Button>
+              }
             </VStack>
           </Flex>
         </Box>
