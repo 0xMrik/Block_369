@@ -79,7 +79,7 @@ describe("NFTMarket", function () {
             const ownerAddress = await nftMarket.ownerOf(tokenID);
             expect(ownerAddress).to.equal(nftMarket.address);
             // NFTTransfer event should have the right args
-            const args = receipt.events[1].args; // Change this line
+            const args = receipt.events[1].args; 
             expect(args.tokenID).to.equal(tokenID);
             expect(args.from).to.equal(signers[0].address);
             expect(args.to).to.equal(nftMarket.address);
