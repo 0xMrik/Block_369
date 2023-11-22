@@ -1,12 +1,16 @@
-# Block369
+# Marketplace NFT
 
+Bienvenue sur mon projet de Marketplace NFT, un jalon clé dans mon parcours de certification auprès de l'école Alyra. Ce projet se distingue par son accent sur les fonctionnalités robustes et fiables, bien que l'interface utilisateur reste simple. L'objectif était de créer une application décentralisée (dApp) fonctionnelle permettant aux utilisateurs de créer (« mint ») et de commercialiser leurs NFTs
 
-Block369 est le projet idéal pour gérer votre bail commercial ! Vous êtes propriétaire ? Créez une représentation de votre bail via notre formulaire et mintez le NFT correspondant ! Il ne vous reste plus qu'à le mettre en vente sur notre marketplace et attendre que les locataires viennent à vous !
+## Stack
 
-Vous cherchez un local ? Parcourez les nombreuses offres de baux proposées sur notre marketplace ! Achetez le NFT qui vous convient et... félicitations ! Vous êtes maintenant locataire !
+pour ce projet, j'ai utilisé : 
 
-Ensuite, laissez-vous guider par notre plateforme qui rend votre contrat automatique : le loyer, les commandements de payer, la révision du loyer, l'indexation sur le référentiel de l'INSEE ? Tout cela est géré par votre plateforme ! Profitez d'une gestion simplifiée et efficace avec Block369.
-
+- React : Utilisé pour construire l'interface utilisateur de la dApp, offrant une expérience utilisateur intuitive et réactive.
+- Wagmi : Une bibliothèque de hooks React conçue pour intégrer efficacement le smart contract avec le front-end de l'application.
+- Solidity : Le langage de programmation choisi pour le développement de smart contracts sur la blockchain Ethereum, assurant sécurité et fiabilité.
+- The Graph : Employé pour indexer les données transitant sur la blockchain, facilitant ainsi la création d'une API robuste et la récupération efficace des données.
+- NFTStorage : Utilisé pour lier les métadonnées (y compris les images) téléchargées par les utilisateurs à leurs NFTs mintés, garantissant une gestion sûre et persistante des données.
 
 ## Installer le projet 
 
@@ -54,12 +58,6 @@ Pour essayer, vous pouvez exécuter certaines des tâches suivantes :
 > npx hardhat coverage
 > ```
 
-
-## TheGraph
-
-
-La Dapp utilise TheGraph pour trier les NFTs. A la maniere d'une API, une querie suivant le cas d'utilisation (Ex : récupérer les NFTs appartenant à une certaine adresse) récupère les données sous forme de JSON pour les envoyer au front en temps reel. 
-    
 
 
 ## Vercel 
